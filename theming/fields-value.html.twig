@@ -1,4 +1,5 @@
+// remove unuseable tags render with field
+{{ content.field_name|render|striptags|trim|raw }}
+
 // get field title configuration
 {{ content.field_name['#title'] }}
-
-//
