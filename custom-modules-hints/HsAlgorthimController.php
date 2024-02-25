@@ -36,6 +36,7 @@ class HsAlgorthimController extends ControllerBase
         // $username = $user->getDisplayName();
         // get expiration date 
         $expiration_time = \Drupal::time()->getCurrentTime() + (30*60);
+        // openssl rand -hex 64 at terminal to generate secret key
         $secret_key = "pDzCAJ69KSacWY2kLaqf0UWb89i_gy_6IGvndSWe4e";
         $payload = array(
             'userIdentifier' => $user_id, // Issuer
