@@ -1,0 +1,48 @@
+Disabling Drupal 8 & 9 caching (render cache, dynamic page cache, Twig cache) Local
+You can find all default files in Sites file in your project. 
+Load local development settings
+Copy example.settings.local.php to default/settings.local.php: 
+$ cp example.settings.local.php default/settings.local.php
+2. Open settings.php file in sites/default and uncomment these lines:
+
+if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
+  include $app_root . '/' . $site_path . '/settings.local.php';
+}
+
+Configure development.services.yml
+The development.services.yml file is located under /sites.
+
+Your final `development.services.yml` should look as follows (mind the indentation):
+
+# Local development services.
+#
+# To activate this feature, follow the instructions at the top of the
+# 'example.settings.local.php' file, which sits next to this file.
+parameters:
+  http.response.debug_cacheability_headers: true
+  twig.config:
+    debug: true
+    auto_reload: true
+    cache: false
+services:
+  cache.backend.null:
+    class: Drupal\Core\Cache\NullBackendFactory
+5. Open settings.local.php and make sure development.services.yml is enabled.
+
+$settings['container_yamls'][] = DRUPAL_ROOT . '/sites/development.services.yml';
+Configure settings.local.php
+Change the following to be TRUE if you want to work with enabled css- and js-aggregation:
+
+$config['system.performance']['css']['preprocess'] = FALSE;
+$config['system.performance']['js']['preprocess'] = FALSE;
+Uncomment these lines to disable the render cache and disable dynamic page cache:
+
+$settings['cache']['bins']['render'] = 'cache.backend.null';
+$settings['cache']['bins']['dynamic_page_cache'] = 'cache.backend.null';
+Add the following lines
+
+$settings['cache']['bins']['page'] = 'cache.backend.null';
+Rebuild cache
+Rebuild the Drupal cache otherwise your website will encounter an unexpected error on page reload. This can be done by with drush:
+
+drush cr

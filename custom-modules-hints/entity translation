@@ -1,0 +1,7 @@
+// $langcode represents the current translation languge code
+
+$translation = $entity->getTranslation($langcode);
+
+// this an example of related_field in user object
+
+$entitty = $user->get('field_example')->entity ? $user->get('field_example')->entity->getTranslation($langcode )->label() : '';

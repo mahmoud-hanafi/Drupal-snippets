@@ -1,0 +1,36 @@
+/**
+
+* Install a new table for store count of downloads for each file of newsletter content type.
+
+*/
+
+function custom_update_9007()
+
+{
+    $database = \Drupal::database();
+    $schema = $database->schema();
+    $table_name = 'newsletter_files_downloads_count';
+    // Check if table exists.
+    if (!$schema->tableExists($table_name)) {
+        $table_schema = [
+            'description' => 'store count of downloads for each file of newsletter content type.',
+            'fields' => [
+                'fid' => [
+                    'type' => 'int',
+                    'not null' => true,
+                    'description' => 'file id',
+                ],
+                'count' => [
+                    'type' => 'int',
+                    'description' => "Col to store the count of each file downloaded",
+                    'length' => 20,
+                    'not null' => TRUE,
+                    'default' => 0,
+                ],
+            ],
+            'primary key' => ['fid'],
+        ];
+        $schema->createTable($table_name, $table_schema);
+    }
+
+}

@@ -1,0 +1,6 @@
+// system schema key/value storage missing in your site Update.php
+ 
+ [notice] Module rdf has an entry in the system.schema key/value storage, but is missing from your site. <a href="https://www.drupal.org/node/3137656">More information about this error</a>.
+The following commands need to be executed just as shown:
+
+vendor/bin/drush php-eval '\Drupal::keyValue("system.schema")->delete("rdf");'

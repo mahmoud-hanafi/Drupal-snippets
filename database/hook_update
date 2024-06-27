@@ -1,0 +1,8 @@
+Re-run hook update N (change module schema version)
+To set it from drush:
+
+drush ev "drupal_set_installed_schema_version('YOUR_MODULES', NEW_SERIAL_NUMBER)"
+drush ev "drupal_set_installed_schema_version('custom', 9001)"
+or (Drupal >= 9.3):
+
+drush ev "\Drupal::service('update.update_hook_registry')->setInstalledVersion('custom', 10000);"

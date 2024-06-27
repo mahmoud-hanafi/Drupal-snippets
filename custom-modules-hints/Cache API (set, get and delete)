@@ -1,0 +1,51 @@
+use Drupal\Core\Cache\CacheBackendInterface;
+
+This is a simple example for set cache and getting without time and cache tags:
+
+// Cache machine key to store and check later (Unique)
+$cid = 'custom_module:' . \Drupal::currentUser()->id();
+
+// Data that want to store and render it later
+$data = [];
+
+if ($cache = \Drupal::cache()->get($cid)) {
+  $data = $cache->data;
+}
+else {
+  $data = [1,2,3];
+  \Drupal::cache()->set($cid, $data);
+}
+
+
+Another example with cache CACHE_PERMANENT and tags :
+
+// Cache machine key to store and check later (Unique)
+$cid = 'custom_module:' . \Drupal::currentUser()->id();
+
+// Data that want to store and render it later
+$data = [];
+
+if ($cache = \Drupal::cache()->get($cid)) {
+    $data = $cache->data;
+} else {
+    $data = [1,2,3];
+    $cahe_tags = ['node_list:news'];
+    \Drupal::cache()->set($cid, $data, CacheBackendInterface::CACHE_PERMANENT, $cahe_tags);
+}
+
+Another example with cache time and tags :
+
+// Cache machine key to store and check later (Unique)
+$cid = 'custom_module:' . \Drupal::currentUser()->id();
+
+// Data that want to store and render it later
+$data = [];
+
+if ($cache = \Drupal::cache()->get($cid)) {
+    $data = $cache->data;
+} else {
+    $data = [1,2,3];
+    $cahe_tags = ['node_list:news'];
+    // Here for 12 hours (In Seconds)
+    \Drupal::cache()->set($cid, $data, time() + 43200 , $cahe_tags);
+}

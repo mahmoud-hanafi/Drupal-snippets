@@ -1,0 +1,27 @@
+Turns a render array into an HTML string without caching result.
+
+// this an example of function get Message from configuration form
+
+public static function getBlankSettingsMessage($id) {
+
+    $renderer = \Drupal::service('renderer');
+
+    $config = \Drupal::config('custom_futurex.blank_settings');
+
+    $message = $config->get($id);
+    if (isset($message) && !empty($message)) {
+      $message = Markup::create($message);
+    } else {
+      $message = t('No result found');
+    }
+
+    $build = [
+
+      '#markup' => $message,
+
+    ];
+
+    $renderer->addCacheableDependency($build, $config);
+    return $renderer->render($build);
+
+}

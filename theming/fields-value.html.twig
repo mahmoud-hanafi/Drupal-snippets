@@ -1,8 +1,37 @@
-// remove unuseable tags render with field
+{# remove unuseable tags render with field #}
 {{ content.field_name|render|striptags|trim|raw }}
 
-// get field title configuration
+
+{# get field title configuration #}
 {{ content.field_name['#title'] }}
 
-// check if user logged in
+
+{# check if user logged in #}
 {% if logged_in %}
+
+
+{# get node label #}
+{{ node.MYFIELD_NAME.fieldDefinition.label }}
+
+
+{# render url in twig #}
+<a href="{{ drupal_url('/user/login') }}"> {{ "Sign in"|t }} </a>
+<a href="{{ path('custom_module.site_settings') }}"> {{ "Change Settings"|t }} </a>
+
+
+{# Splitting a list of items in columns #}
+{# To split the list of items into 2 columns or more evenly use the following code: #}
+<div class="col-6 col-md-6 col-lg-6">
+  {% set content = [ 'a','b','c','e' ] %} 
+  {% for columns in content|batch(3,'No Item') %}
+  <ul class="col-2 col-md-2 col-lg-2">
+    {% for item in columns %}
+    <li>{{ item }}</li>
+    {% endfor %}
+  </ul>
+  {% endfor %}
+</div>
+
+{# Trim twig template #}
+{% set text = content.body|render|striptags %}
+{{ text|length > 200 ? text|slice(0, 200)|raw ~ '...' : text|raw }}

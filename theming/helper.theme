@@ -1,0 +1,21 @@
+Make the (node) type available to search-result.html.twig
+when looping info_split in search-result--node-search.html.twig type of content item doesn't appear with me to solve this I used Hook_preprocess_search
+
+/**
+ * Implements hook_preprocess_HOOK() for search_result.
+ *
+ * Make the (node) type available to search-result.html.twig.
+ */
+
+function hook_preprocess_search_result(&$variables)
+{
+
+  $info = &$variables['info_split'];
+
+  $result = $variables['result'];
+
+  if (empty($info['type']) && !empty($result['type'])) {
+
+    $info['type'] = $result['type'];
+
+}

@@ -1,0 +1,14 @@
+public function mkPermanent($file){
+
+    $permanent_file = $file;
+    if (is_array($permanent_file)) {
+      if (isset($permanent_file[0])) {
+        $permanent_file_id = $permanent_file[0];
+        $real_file = File::load($permanent_file_id);
+        if ($real_file != null) {
+          $real_file->setPermanent();
+          $real_file->save();
+        }
+      }
+    }
+}
