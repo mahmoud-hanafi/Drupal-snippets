@@ -1,0 +1,8 @@
+# Schema for the configuration files of the Balidea module.
+balidea.settings:
+  type: config_object
+  label: 'Balidea settings'
+  mapping:
+    example:
+      type: string
+      label: 'Example'

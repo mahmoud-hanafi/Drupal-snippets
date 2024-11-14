@@ -1,0 +1,7 @@
+json_export.encrypt_users:
+  path: '/encrypt-users'
+  defaults:
+    _controller: '\Drupal\json_export\Controller\EncryptUsers::build'
+    _title: 'Encrypt users'
+  requirements:
+    _permission: 'access content'

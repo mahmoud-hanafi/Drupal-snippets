@@ -1,0 +1,15 @@
+balidea.data:
+  path: '/balidea/data'
+  defaults:
+    _title: 'Balidea Form Data'
+    _controller: '\Drupal\balidea\Controller\BalideaController::build'
+  requirements:
+    _role: authenticated
+
+balidea.settings_form:
+  path: '/admin/config/system/balidea'
+  defaults:
+    _title: 'Balidea settings'
+    _form: 'Drupal\balidea\Form\SettingsForm'
+  requirements:
+    _permission: 'administer balidea configuration'

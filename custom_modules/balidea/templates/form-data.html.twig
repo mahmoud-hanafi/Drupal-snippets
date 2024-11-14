@@ -1,0 +1,15 @@
+<div class="data-section">
+    <h4 class="number-element-data">
+        {{ 'Number'|t }} : {{ items.number }}
+    </h4>
+    <div class="text-element-data">
+      <h4> {{ 'text'|t }} : </h4> 
+      <span>
+        {% if items.langcode == 'en' %}
+          {{ items.text_en.value|raw }} 
+        {% else %}
+          {{ items.text_es.value|raw }} 
+        {% endif %}
+      </span>
+    </div>
+</div>

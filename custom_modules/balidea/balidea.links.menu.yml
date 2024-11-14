@@ -1,0 +1,6 @@
+balidea.settings_form:
+  title: 'Balidea'
+  description: 'Configure Balidea.'
+  parent: system.admin
+  route_name: balidea.settings_form
+  weight: 1

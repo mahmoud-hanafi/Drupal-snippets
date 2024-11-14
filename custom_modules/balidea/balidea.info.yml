@@ -1,0 +1,5 @@
+name: Balidea
+type: module
+description: Module to build config form
+package: custom
+core_version_requirement: ^9 || ^10

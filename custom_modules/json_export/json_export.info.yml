@@ -1,0 +1,5 @@
+name: Json Export
+type: module
+description: A custom module to export data of current pages in json respone for ui
+package: Custom
+core_version_requirement: ^9 || ^10
