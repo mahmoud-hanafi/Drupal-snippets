@@ -1,0 +1,52 @@
+# Schema for the configuration files of the Site Settings module.
+code_config.settings:
+  type: config_object
+  label: 'Site Settings settings'
+  mapping:
+    slider:
+      type: mapping
+      label: 'Slider'
+      mapping:
+        title:
+          type: text
+          label: 'Title'
+        description:
+          type: text
+          label: 'Description'
+        button_text:
+          type: text
+          label: 'Description'
+        button_url:
+          type: text
+          label: 'Description'
+    vision:
+      type: mapping
+      label: 'Slider'
+      mapping:
+        vision_title:
+          type: text
+          label: 'Title'
+        description:
+          type: text
+          label: 'Description'    
+    statistics:
+      type: mapping
+      label: 'Statistics'
+      mapping:
+        startups:
+          type: text
+          label: 'Startups'
+        persons:
+          type: text
+          label: 'Persons'
+        prizes:
+          type: text
+          label: 'Prizes'
+    footer:
+      type: mapping
+      label: 'Footer'
+      mapping:
+        copyrights:
+          type: text
+          label: 'Title'
+

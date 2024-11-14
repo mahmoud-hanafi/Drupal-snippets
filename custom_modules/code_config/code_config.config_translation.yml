@@ -1,0 +1,5 @@
+code_config.settings_form:
+    title: 'Site Settings'
+    base_route_name: code_config.settings_form
+    names:
+      - code_config.settings

@@ -1,4 +1,6 @@
 <?php
+
+// first should use hijri_format Contrib Module 
 /**
  * Implements hook_preprocess_HOOK() for node.html.twig.
  */

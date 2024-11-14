@@ -1,0 +1,7 @@
+date_range_status.settings_form:
+  path: '/admin/config/system/date-range-status'
+  defaults:
+    _title: 'Date range status settings'
+    _form: 'Drupal\date_range_status\Form\SettingsForm'
+  requirements:
+    _permission: 'administer date_range_status configuration'

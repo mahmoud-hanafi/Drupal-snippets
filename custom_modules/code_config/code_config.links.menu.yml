@@ -1,0 +1,6 @@
+code_config.settings_form:
+  title: 'Site Settings'
+  description: 'Configure Site Settings.'
+  parent: system.admin_config_system
+  route_name: code_config.settings_form
+  weight: 10

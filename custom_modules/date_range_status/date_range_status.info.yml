@@ -1,0 +1,7 @@
+name: Date range status
+type: module
+description: identify current node status(open/closed/later) depends on it's date range value.
+package: Custom
+core_version_requirement: ^9 || ^10
+dependencies:
+  - datetime_range

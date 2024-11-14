@@ -1,0 +1,6 @@
+name: MCIT Settings
+type: module
+description: Administer MCIT Settings
+package: Custom
+core_version_requirement: ^9 || ^10
+configure: code_config.settings_form

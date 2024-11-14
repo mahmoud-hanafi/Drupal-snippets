@@ -1,0 +1,16 @@
+langcode: en
+
+slider:
+  title: ''
+  description: ''
+  button_text: ''
+  button_url: ''
+vision:
+  vision_title: ''
+  description: ''
+statistics:
+  startups: ''
+  persons: ''
+  prizes: ''
+footer:
+  copyrights: ''

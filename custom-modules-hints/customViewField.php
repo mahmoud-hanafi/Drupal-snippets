@@ -1,4 +1,3 @@
-
 <?php
 // in banckruptcy and date_range_status
 

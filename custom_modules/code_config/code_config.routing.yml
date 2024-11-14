@@ -1,0 +1,7 @@
+code_config.settings_form:
+  path: '/admin/config/system/code-config'
+  defaults:
+    _title: 'Site Settings'
+    _form: 'Drupal\code_config\Form\SettingsForm'
+  requirements:
+    _permission: 'administer code_config configuration'

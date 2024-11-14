@@ -3,7 +3,7 @@
 // Load all terms of a vocabulary
 use Drupal\taxonomy\Entity\Term;
 
-public function getTaxonomyBuild(){
+function getTaxonomyBuild(){
 
     $term_data = [];
 

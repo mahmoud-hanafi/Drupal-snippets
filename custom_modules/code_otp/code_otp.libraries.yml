@@ -1,0 +1,8 @@
+code_otp:
+  js:
+    js/code-otp.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/once
+    - core/drupalSettings

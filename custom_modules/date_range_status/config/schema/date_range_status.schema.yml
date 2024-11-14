@@ -1,0 +1,8 @@
+# Schema for the configuration files of the Date range status module.
+date_range_status.settings:
+  type: config_object
+  label: 'Date range status settings'
+  mapping:
+    example:
+      type: string
+      label: 'Example'

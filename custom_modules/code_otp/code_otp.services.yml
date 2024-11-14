@@ -1,0 +1,14 @@
+services:
+  code_otp.otp:
+    class: Drupal\code_otp\OtpService
+    arguments: [
+      '@logger.factory',
+      '@plugin.manager.mail',
+      '@tempstore.private',
+      '@user.data'
+    ]
+  code_otp.access_check:
+    class: Drupal\code_otp\Access\OtpAccessCheck
+    arguments: ['@code_otp.otp']
+    tags:
+      - { name: access_check }

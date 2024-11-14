@@ -1,0 +1,17 @@
+code_otp.user_otp:
+  path: '/user/login/otp'
+  defaults:
+    _form: 'Drupal\code_otp\Form\OtpVerify'
+    _title: 'Verify OTP'
+  requirements:
+    _custom_access: 'code_otp.access_check::access'
+  options:
+    no_cache: TRUE
+code_otp.resend:
+  path: '/otp-resend'
+  defaults:
+    _title: 'Resend Otp'
+    _controller: '\Drupal\code_otp\Controller\ResendOtpController::resend'
+  requirements:
+    _permission: 'access content'
+    _method: 'POST'

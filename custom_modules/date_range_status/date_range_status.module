@@ -1,0 +1,53 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for Date range status module.
+ */
+
+ /**
+ * Implements hook_views_data().
+ */
+function date_range_status_views_data()
+{
+    $data['views']['table']['group'] = t('Custom Global');
+    $data['views']['node_status'] = array(
+        'title' => t('Node Status'),
+        'field' => array(
+          'title' => t('Node Status'),
+          'help' => t('Define node status'),
+          'id' => 'node_status',
+        ),
+    );
+    $data['views']['node_status_filter'] = [
+      'title' => t('Status of Node - Custom Filter'),
+      'filter' => [
+        'title' => t('Status of Node - Custom Filter'),
+        'field' => 'field_date',
+        'id' => 'node_status_filter',
+      ],
+    ];
+    return $data;
+}
+
+/**
+ * Implements hook_mail().
+ */
+function date_range_status_mail($key, &$message, $params)
+{
+    // The $params array holds the values entered on the ExampleForm, stored
+    // with the same structure as the $form array. We need to copy these values
+    // to the appropriate place in the $message so that they get used when
+    // sending the email.
+    $message['from'] = $params['headers']['From'] ?? NULL;
+    $message['sender'] = $params['headers']['Sender'] ?? NULL;
+
+    // Strip newline characters from email subjects.
+    $message['subject'] = isset($params['subject']) ? str_replace(["\r\n", "\r", "\n"], ' ', $params['subject']) : NULL;
+    $message['body'][] = $params['body'];
+}
+
+
+function date_range_status_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+
+}

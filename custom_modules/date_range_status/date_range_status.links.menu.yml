@@ -1,0 +1,6 @@
+date_range_status.settings_form:
+  title: 'Date range status'
+  description: 'Configure Date range status.'
+  parent: system.admin_config_system
+  route_name: date_range_status.settings_form
+  weight: 10

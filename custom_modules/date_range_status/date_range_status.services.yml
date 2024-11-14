@@ -1,0 +1,5 @@
+services:
+  date_range_status.node_status_function:
+    class: Drupal\date_range_status\NodeStatusFunction
+    tags:
+      - { name: twig.extension }

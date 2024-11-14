@@ -1,0 +1,147 @@
+<?php
+
+use Drupal\Core\Session\AccountInterface;
+use Drupal\user\Entity\User;
+use Drupal\Core\Mail\MailManagerInterface;
+use Drupal\Core\Site\Settings;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Drupal\user\UserDataInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Url;
+
+/**
+ * @file
+ * Primary module hooks for Code OTP module.
+ */
+
+
+/** 
+ * Implements hook_form_user_register_form_alter(). 
+ */
+function code_otp_form_user_register_form_alter(&$form, \Drupal\Core\Form\FormStateInterface &$form_state, $form_id) {
+  if (!$form['administer_users']['#value']) {
+    $form['actions']['submit']['#submit'][] = 'code_otp_user_register_submit';
+    // We remove save function call and handle it internally.
+    if (($key = array_search('::save', $form['actions']['submit']['#submit'])) !== false) {
+      unset($form['actions']['submit']['#submit'][$key]);
+    }
+  }
+}
+
+/** 
+ * Implements hook_form_user_login_form_alter(). 
+ */
+function code_otp_form_user_login_form_alter(&$form, \Drupal\Core\Form\FormStateInterface &$form_state, $form_id) { 
+  $form['actions']['submit']['#submit'][] = 'code_otp_user_login_submit';
+}
+
+
+/**
+ * Registration form submit handler.
+ */
+function code_otp_user_register_submit(&$form, \Drupal\Core\Form\FormStateInterface &$form_state) {
+  $account = $form['language']['preferred_langcode']['#pre_render']['user_langcode'][0]->buildEntity($form, $form_state);
+  
+  // This part is from Drupal\user\RegisterForm save function
+  $pass = $account->getPassword();
+
+  // Save has no return value so this cannot be tested.
+  // Assume save has gone through correctly.
+  $account->save();
+
+
+  $form_state->set('user', $account);
+  $form_state->setValue('uid', $account->id());
+
+  \Drupal::logger('user')->notice('New user: %name %email.', ['%name' => $form_state->getValue('name'), '%email' => '<' . $form_state->getValue('mail') . '>', 'type' => $account->toLink(t('Edit'), 'edit-form')->toString()]);
+
+  // Add plain text password into user account to generate mail tokens.
+  $account->password = $pass;
+
+  // Our custom part starts here.
+  $values = $form_state->getValues();
+
+  // generate otp
+  $otpService = \Drupal::service('code_otp.otp');
+  $otpService->setTempValue('otp_requests', 'otp_requested', TRUE);
+  $otp = $otpService->generateOpt();
+  // new user uid and email
+  $uid = $values['uid'];
+  $email = $values['mail'];
+  $otpService->setTempValue('otp_requests', 'uid', $uid);
+  $otpService->setUserData('code_otp', $uid, 'otp', md5($otp));
+
+  // add otp to email parameters
+  $params['otp'] = $otp;  
+  // send otp email
+  $result = $otpService->sendOpt('code_otp', 'otp', $email, $params);
+  if (!($result)) {
+    $otpService->loggerChannelFactory->get('otp')->error('Unable to send otp email');
+  }
+  $otpService->setTempValue('otp_requests', 'expiration_time', time() + 120);
+  $form_state->setRedirect('code_otp.user_otp');
+}
+
+function custom_login_form_validate(array &$form, \Drupal\Core\Form\FormStateInterface $form_state) {
+  $name = $form_state->getValue('name');
+  $password = trim($form_state->getValue('pass'));
+  if (!$form_state->isValueEmpty('name') && strlen($password) > 0) {
+    $user = \Drupal::service("code_helper.user")->getUserByMobile($name, 1);
+    $name = $user->pass ? $user->data->getAccountName() : '';
+    $user_auth = \Drupal::service('user.auth')->authenticate($name, $password);
+    if($user_auth){
+      // user_login_finalize(User::load($user_auth));
+      $form_state->setValue('name', $name);
+      return TRUE;
+    } 
+  }
+}
+/**
+ * login form submit handler.
+ */
+function code_otp_user_login_submit(&$form, \Drupal\Core\Form\FormStateInterface &$form_state) {
+  // store OTP request to allow user access otp verify form.
+  $otpService = \Drupal::service('code_otp.otp');
+  $otpService->setTempValue('otp_requests', 'otp_requested', TRUE);
+
+  // get username
+  $username = $form_state->getValue('name');
+  // get user id and email
+  $user = user_load_by_name($username);
+  $email = $user->getEmail();
+  $uid = $user->id();
+  // store uid at temporary file
+  $otpService->setTempValue('otp_requests', 'uid', $uid);
+  // Generate a random OTP.  
+  $otp = $otpService->generateOpt();
+  // store otp of current uid
+  $otpService->setUserData('code_otp', $uid, 'otp', md5($otp));
+  // add otp to email parameters
+  $params['otp'] = $otp;  
+  // send otp email
+  $result = $otpService->sendOpt('code_otp', 'otp', $email, $params);
+  if (!($result)) {
+    \Drupal::service('logger.factory')->get('otp')->error('Unable to send otp email');
+  }
+  // set expiration time
+  $otpService->setTempValue('otp_requests', 'expiration_time', time() + 120);
+  $form_state->setRedirect('code_otp.user_otp');
+}
+
+/** 
+ * Implements hook_mail(). 
+ */
+function code_otp_mail($key, &$params, $langcode) {
+  switch ($key) {    
+    case 'otp':      
+      $to = $params['to'];      
+      $otp = $params['params']['otp'];   
+      $params['subject'] = t('Your OTP Code');      
+      $params['body'] = [t('Your OTP code is: @otp', ['@otp' => $otp])];      
+      return [        
+        'subject' => $params['subject'],        
+        'body' => $params['body'],      
+      ];  
+  }
+}
